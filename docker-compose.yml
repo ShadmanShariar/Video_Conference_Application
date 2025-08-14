@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  mongodb:
+    image: mongo:6.0
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: video_calling_db
+    volumes:
+      - mongo_data:/data/db
+
+  app:
+    build: .
+    container_name: videocallingapp
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://mongodb:27017/video_calling_db
+    depends_on:
+      - mongodb
+
+volumes:
+  mongo_data:
